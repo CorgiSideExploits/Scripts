@@ -1,4 +1,6 @@
- SSSSSSSSSSSSSSS                                                                  tttt                                                  XXXXXXX       XXXXXXX
+
+--[[
+SSSSSSSSSSSSSSS                                                                  tttt                                                  XXXXXXX       XXXXXXX
  SS:::::::::::::::S                                                              ttt:::t                                                  X:::::X       X:::::X
 S:::::SSSSSS::::::S                                                              t:::::t                                                  X:::::X       X:::::X
 S:::::S     SSSSSSS                                                              t:::::t                                                  X::::::X     X::::::X
@@ -19,9 +21,9 @@ S:::::::::::::::SS p::::::::::::::pp   a::::::::::aa:::ar:::::r                 
                   p:::::::p                                                                                                                                    
                   p:::::::p                                                                                                                                    
                   p:::::::p                                                                                                                                    
-                  ppppppppp                                                                                                                                    
-                                                                                                                                                               
-
+                  ppppppppp     
+--]]
+                                                                                                                                                                                                                                                                                            
 local v0 = tonumber;
 local v1 = string.byte;
 local v2 = string.char;
