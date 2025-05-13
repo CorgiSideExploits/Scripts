@@ -1,0 +1,418 @@
+if game.PlaceId == 155615604 then
+	
+	local AdjustableToggles = {
+		Noclip = false; -- creating this for extra because stinker mcdinker idk man
+		GodMode = false;
+	};
+	
+	local Players = game:GetService("Players");
+	local UIS = game:GetService("UserInputService")
+	local LocalPlayer = Players.LocalPlayer;
+	
+	local Equipped = false; -- you can change this but you will also have to change the transparency of the back and hand katana states too
+	local Attacking = false; -- creating a cute anime girl bool for when attacking
+
+--[[
+local SpawnButton = script.Parent['MainFrame']['Spawn']
+local NoclipButton = script.Parent['MainFrame']['Noclip']
+local CloseButton = script.Parent['MainFrame']['Close']
+
+script.Parent['MainFrame'].Draggable = true; -- deprecated but a cutey
+
+if LocalPlayer.PlayerGui[script.Parent.Name] and LocalPlayer.PlayerGui[script.Parent.Name] ~= script.Parent then
+	LocalPlayer.PlayerGui[script.Parent.Name]:Destroy()
+end
+--]]
+
+
+	local CreateBackStateKatana = function()
+
+		local Char = LocalPlayer.Character or LocalPlayer.CharacterAdded:Wait()
+
+
+		local katana_back_state         = Instance.new("Part")
+		katana_back_state.BottomSurface = Enum.SurfaceType.Smooth
+		katana_back_state.BrickColor    = BrickColor.new(0.48235297203063965, 0.18431372940540314, 0.48235297203063965)
+		katana_back_state.CFrame        = CFrame.new(0, 0, 0.58)
+		katana_back_state.Material      = Enum.Material.Neon
+		katana_back_state.Orientation   = Vector3.new(90, 0, 0)
+		katana_back_state.Reflectance   = 0.20000000298023224
+		katana_back_state.Rotation      = Vector3.new(90,40,0)
+		katana_back_state.Size          = Vector3.new(2.2569775581359863, 0.5642443895339966, 0.9345364570617676)
+		katana_back_state.TopSurface    = Enum.SurfaceType.Smooth
+		katana_back_state.Name          = "Katana_BackState"
+		katana_back_state.Parent        = Char
+		katana_back_state.CanCollide = false
+		katana_back_state.Massless = true
+		katana_back_state.Transparency = 0
+
+		-- adding some fancy particles uwu
+		local katana_hand_state_parti = Instance.new("Sparkles")
+		katana_hand_state_parti.Enabled = true;
+		katana_hand_state_parti.Color = Color3.new(0.376471, 0.160784, 0.623529)
+		katana_hand_state_parti.Parent = katana_back_state
+		katana_hand_state_parti.SparkleColor = Color3.new(0.376471, 0.160784, 0.623529)
+
+		local back_weld = Instance.new("WeldConstraint")
+		back_weld.Part0 = katana_back_state
+		back_weld.Part1 = Char['Torso']
+		back_weld.Name = "BackWeld"
+		back_weld.Parent = katana_back_state
+
+		local sword_light = Instance.new("PointLight")
+		sword_light.Range = 3
+		sword_light.Brightness = 2000
+		sword_light.Color = Color3.new(0.215686, 0.117647, 0.505882)
+		sword_light.Name = "SwordLight"
+		sword_light.Parent = katana_back_state
+
+		local mesh = Instance.new("SpecialMesh")
+		mesh.MeshType = Enum.MeshType.FileMesh
+		mesh.MeshId = "rbxassetid://137760297828513"
+		mesh.Scale = Vector3.new(0.5642443895339966, 0.5642443895339966, 0.4672682285308838)
+		mesh.Parent = katana_back_state
+
+		if Char:FindFirstChild(katana_back_state.Name) and Char:FindFirstChild(katana_back_state.Name) ~= katana_back_state then
+			Char[katana_back_state.Name]:Destroy()
+		end
+	end
+
+	local CreateHandStateKatana = function()
+
+		local Char = LocalPlayer.Character or LocalPlayer.CharacterAdded:Wait()
+
+
+		local katana_hand_state         = Instance.new("Part")
+		katana_hand_state.BottomSurface = Enum.SurfaceType.Smooth
+		katana_hand_state.BrickColor    = BrickColor.new(0.48235297203063965, 0.18431372940540314, 0.48235297203063965)
+		katana_hand_state.CFrame        = CFrame.new(1.5, -1, -1.36)
+		katana_hand_state.Material      = Enum.Material.Neon
+		katana_hand_state.Orientation   = Vector3.new(0, 30, 87.5)
+		katana_hand_state.Reflectance   = 0.20000000298023224
+		katana_hand_state.Rotation      = Vector3.new(180,0,87.5)
+		katana_hand_state.Size          = Vector3.new(2.2569775581359863, 0.5642443895339966, 0.9345364570617676)
+		katana_hand_state.TopSurface    = Enum.SurfaceType.Smooth
+		katana_hand_state.Name          = "Katana_HandState"
+		katana_hand_state.Parent        = Char
+		katana_hand_state.CanCollide    = false
+		katana_hand_state.Massless      = true
+		katana_hand_state.Transparency  = 1 -- default transparent
+
+		-- adding some fancy particles uwu
+		local katana_hand_state_parti = Instance.new("Sparkles")
+		katana_hand_state_parti.Enabled = true;
+		katana_hand_state_parti.Color = Color3.new(0.376471, 0.160784, 0.623529)
+		katana_hand_state_parti.Parent = katana_hand_state
+		katana_hand_state_parti.SparkleColor = Color3.new(0.376471, 0.160784, 0.623529)
+
+		local hand_weld = Instance.new("WeldConstraint")
+		hand_weld.Part0 = katana_hand_state
+		hand_weld.Part1 = Char['Right Arm']
+		hand_weld.Name = "HandWeld"
+		hand_weld.Parent = katana_hand_state
+
+		local mesh = Instance.new("SpecialMesh")
+		mesh.MeshType = Enum.MeshType.FileMesh
+		mesh.MeshId = "rbxassetid://137760297828513"
+		mesh.Scale = Vector3.new(0.5642443895339966, 0.5642443895339966, 0.4672682285308838)
+		mesh.Parent = katana_hand_state
+
+		if Char:FindFirstChild(katana_hand_state.Name) and Char:FindFirstChild(katana_hand_state.Name) ~= katana_hand_state then
+			Char[katana_hand_state.Name]:Destroy()
+		end
+	end
+
+	local SpawnWeapons = function()
+
+		local Char = LocalPlayer.Character or LocalPlayer.CharacterAdded:Wait()
+
+		local BSK = Char:FindFirstChild("Katana_BackState")
+		local HSK = Char:FindFirstChild("Katana_HandState")
+
+
+		local OriginalCFrame = Char['HumanoidRootPart'].CFrame
+
+		if BSK and HSK then
+			game:GetService("StarterGui"):SetCore("SendNotification", {
+				Title = "FE Void's Revenge";
+				Text = "You Already Have The Sword Spawned.";
+				Duration = 5;
+			})
+		else
+			Char['Humanoid'].WalkSpeed = 0
+			task.wait(0.5)
+			Char['HumanoidRootPart'].CFrame = CFrame.new(0,0,0);
+			Char['HumanoidRootPart'].Anchored = true;
+
+			if not BSK then
+				CreateBackStateKatana()
+			end
+
+			if not HSK then
+				CreateHandStateKatana()
+			end
+
+			game:GetService("StarterGui"):SetCore("SendNotification", {
+				Title = "FE Void's Revenge";
+				Text = "Successfully Spawned Void's Revenge!";
+				Duration = 5;
+			})
+
+			task.wait()
+
+			Char['HumanoidRootPart'].Anchored = false;
+			Char['HumanoidRootPart'].CFrame = OriginalCFrame
+			Char['Humanoid'].WalkSpeed = Settings.WS;
+		end
+	end
+
+	local SetupScript = function()
+
+		warn("FE Void's Revenge Sword: Loaded Successfully!");
+
+		game:GetService("StarterGui"):SetCore("SendNotification", {
+			Title = "FE Void Revenge Sword";
+			Text = "Script Loaded Successfully.";
+			Duration = 5;
+		})
+
+		warn("FE Void's Revenge Script Loaded Successfully!")
+
+		SpawnWeapons()
+
+	end
+
+
+
+	-- equipping and unequipping and other stuff idk
+	UIS.InputBegan:Connect(function(input : InputObject, gameProcessedEvent : boolean)
+
+		local Char = LocalPlayer.Character or LocalPlayer.CharacterAdded:Wait()
+
+		if input.KeyCode == EquipKey then
+			if not gameProcessedEvent then
+				if not Equipped then
+					Char['Katana_BackState'].Transparency = 1 -- transparent
+					Char['Katana_HandState'].Transparency = 0 -- visible
+					Equipped = true
+				else
+					Equipped = false
+					Char['Katana_HandState'].Transparency = 1 -- transparent
+					Char['Katana_BackState'].Transparency = 0 -- visible
+				end
+			else
+				warn("An error occured while trying to equip/unequip the Void Revenge Sword.")
+			end
+		end
+		if input.UserInputType == AttackKey then
+			if not gameProcessedEvent then
+				if Equipped then
+					-- print("Attacking")
+					local AT = Char['Humanoid'].Animator:LoadAnimation(game:GetService("ReplicatedStorage")['SpartanModules']['Slash'])
+					
+					if not Attacking and LocalPlayer.Character and Equipped then
+						Attacking = true;
+						AT:Play()
+
+						task.wait(Settings.SwordDebounce)
+						Attacking = false;
+					end
+				end
+			end
+		end
+	end)
+
+--[[
+	local EnterGodMode = function(stage : bool)
+	local Char = LocalPlayer.Character or LocalPlayer.CharacterAdded:Wait()
+	
+	if stage then
+		for i,x in pairs(Char:GetDescendants()) do
+			if x:IsA("BasePart") then
+				x.BrickColor = BrickColor.Black()
+				x.Material = Enum.Material.Neon
+
+				if x:IsA("Accessory") and not x:FindFirstChild("Handle") then
+					x['Handle'].Transparency = 1;
+				else
+					x.Transparency = 0.5
+				end
+
+				if x.Name == "Head" then
+					local y = Instance.new("Fire",x)
+					y.Name = "Fire"
+					y.Color = Color3.new(0.207843, 0, 0.443137)
+					y.Size = 10
+					y.Heat = 50
+				end
+				
+				Settings.WS = 45;
+				
+			end
+		end
+	else
+		Settings.WS = 22;
+	end
+	
+	
+end
+
+local SetNoclip = function(x : boolean)
+	AdjustableToggles.Noclip = x;
+end
+
+-- For whenever the key (default: Q) is pressed.
+task.spawn(function()
+
+task.wait()
+task.spawn(function()
+	SpawnButton.Activated:Connect(function()
+		pcall(function()
+			SpawnWeapons()
+		end)
+	end)
+	NoclipButton.Activated:Connect(function()
+		SetNoclip(not AdjustableToggles.Noclip)
+		NoclipButton.Text = "Noclip: "..tostring(AdjustableToggles.Noclip)
+	end)
+	CloseButton.Activated:Connect(function()
+		local ClickSound = game:GetService("ReplicatedStorage"):WaitForChild("SpartanModules"):WaitForChild("Click"):Clone()
+		ClickSound.Name = math.random(1,1000000) -- i got bored so I did this uwu~
+		ClickSound.Parent = game:GetService("SoundService")
+		
+		CloseButton.Parent.Visible = false;
+		script.Parent.Open.Visible = true;
+		
+		ClickSound:Play();
+		
+		task.wait(1.5) ClickSound:Destroy()
+	end)
+	script.Parent['Open'].Activated:Connect(function()
+		local ClickSound = game:GetService("ReplicatedStorage"):WaitForChild("SpartanModules"):WaitForChild("Click"):Clone()
+		ClickSound.Name = math.random(1,1000000) -- i got bored so I did this uwu~
+		ClickSound.Parent = game:GetService("SoundService")
+
+		CloseButton.Parent.Visible = true;
+		script.Parent.Open.Visible = false;
+		
+		ClickSound:Play();
+
+		task.wait(1.5) ClickSound:Destroy()
+	end)
+end)
+
+-- Quickly coding noclip uwu~
+task.spawn(function()
+	game:GetService("RunService").RenderStepped:Connect(function()
+		
+		local Char = LocalPlayer.Character or LocalPlayer.CharacterAdded:Wait()
+		
+		if AdjustableToggles.Noclip == true then
+			for i,x in pairs(Char:GetChildren()) do
+				if x:IsA("BasePart") then
+					x.CanCollide = false;
+				end
+			end
+		end
+		if AdjustableToggles.Noclip == false then
+			Char['Torso'].CanCollide = true;
+		end
+	end)
+end)
+
+-- For listing the controls
+task.spawn(function()
+	script.Parent.ControlsFrame.EquipLabel.Text = "[E]".. " Equip"
+	script.Parent.ControlsFrame.SlashLabel.Text = "[Left Click]".. " Slash"
+end)
+
+task.spawn(function()
+	game:GetService("RunService").RenderStepped:Connect(function()
+		local Char = LocalPlayer.Character or LocalPlayer.CharacterAdded:Wait()
+
+		Char.Humanoid.WalkSpeed = Settings.WS
+	end)
+end)
+
+--]]
+
+	-- Misc
+
+	-- Spawning the sword back in whenever they first spawn in and yea
+	task.spawn(function()
+		LocalPlayer.CharacterAdded:Connect(function()
+			local Char = LocalPlayer.Character or LocalPlayer.CharacterAdded:Wait()
+
+			if Char then
+				task.wait(0.05) 
+				SpawnWeapons()
+			else
+				game:GetService("StarterGui"):SetCore("SendNotification", {
+					Title = "FE Void's Revenge";
+					Text = "There was an error spawning the sword into the player.";
+					Duration = 5;
+				})
+			end
+
+		end)
+	end)
+
+	task.spawn(function()
+		SpawnWeapons() -- I am calling this here because I am a gay boy and I want to.
+	end)
+
+	-- Unloading the client script
+	task.spawn(function()
+		if not game:GetService("ReplicatedStorage"):FindFirstChild("SpartanModules") then
+
+			SetupScript()
+
+			local SM = Instance.new("Folder", game:GetService("ReplicatedStorage"))
+			SM.Name = "SpartanModules"
+
+			local SlashAnim = Instance.new("Animation", SM)
+			SlashAnim.Name = "Slash"
+			SlashAnim.AnimationId = "rbxassetid://218508052"
+
+			local ClickSnd = Instance.new("Sound", SM)
+			ClickSnd.Name = "Click"
+			ClickSnd.SoundId = "rbxassetid://6042053626"
+		end
+	end)
+
+	-- Setting the player's walkspeed per frame
+	task.spawn(function()
+		game:GetService("RunService").RenderStepped:Connect(function()
+			local Char0 = LocalPlayer.Character or LocalPlayer.CharacterAdded:Wait()
+
+			Char0['Humanoid'].WalkSpeed = Settings.WS;
+		end)
+	end)
+	
+	-- For attacking (also asks everyone in the server if they are into the femboys~)
+	task.spawn(function()
+		game:GetService("RunService").RenderStepped:Connect(function()
+			if Attacking then
+				for i,x in pairs(Players:GetChildren()) do
+					if x ~= LocalPlayer then
+						game:GetService("ReplicatedStorage")['meleeEvent']:FireServer(x)
+					end
+				end
+			end
+		end)
+	end)
+	
+	-- NEH
+	
+else
+	
+	-- ENDING
+	
+	warn("FE Void's Revenge | Game is Not Prison Life.")
+	game:GetService("StarterGui"):SetCore("SendNotification", {
+		Title = "FE Void's Revenge";
+		Text = "Wrong Game, Sword Not Spawned.";
+		Duration = 5;
+	})
+end
+
