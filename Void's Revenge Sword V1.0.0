@@ -1,3 +1,24 @@
+--[[
+    
+    FE Void Revenge's Sword Script By CorgiScripter
+    Version: V1.0.0 (Released Version)
+    Discord Server Invite: https://discord.gg/SBr3SXFpQA
+    Property Of CorgiScripter: DO NOT SKID
+    
+    So here is the deal, this script is partly FE. The sword's visibilty is FD, but the animations, and of course, the killing is FE!
+    Enjoy the script! ;)
+    From the owner himself, CorgiScripter. (CorgiScripter on Discord, CorgiScripter on Roblox.)
+    
+--]]
+
+local EquipKey = Enum.KeyCode.E -- key used to unseath the sword
+local AttackKey = Enum.UserInputType.MouseButton1 -- button used to attack (I recommend you keep this at left click)
+
+local Settings = {
+	WS = 25; -- Adjust this how you would like to, this is how fast the player walks. Re-executing this may cause errors that I could fix in a later version but I don't know if I want to uwu~
+	SwordDebounce = 1.75 -- This is how long you have to wait until you can swing your sword like a femboy with a katana~	
+}
+
 if game.PlaceId == 155615604 then
 	
 	local AdjustableToggles = {
